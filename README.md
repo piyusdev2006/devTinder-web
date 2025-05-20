@@ -54,3 +54,5 @@
 
 <!-- Break Time -->
 - Logout functionality
+- Get the feed and store the feed in the store
+- Create a feedslice and render the feed in the feed api
