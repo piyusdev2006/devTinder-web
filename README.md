@@ -47,3 +47,7 @@
 - Refactor the navbar component to use redux
 - Refactor code to add constants in a separate file
 - create a component folder and put all the components we have created inside it and also updates all the imports
+
+- You should not be able to access other routes without logging in
+- if token is not present in local storage then redirect to login page
+- 
