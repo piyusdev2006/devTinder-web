@@ -10,6 +10,7 @@ const Login = () => {
   const [password, setPassword] = useState("Strong@356");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [error, setError] = useState("");
 
   const handleLogin = async () => {
     try {
@@ -24,6 +25,7 @@ const Login = () => {
       dispatch(addUser(res.data));
       return navigate("/");
     } catch (error) {
+      setError(error?.response?.data || "something went wrong");
       console.log(error);
     }
   };
@@ -76,6 +78,7 @@ const Login = () => {
           </div>
 
           {/* Forgot Password */}
+          <p className="text-red-500">{error}</p>
           <div className="text-center mt-2">
             <a href="#" className="text-sm text-primary hover:underline">
               Forgot password?
