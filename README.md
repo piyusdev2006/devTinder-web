@@ -58,4 +58,5 @@
 - Create a feedslice and render the feed in the feed api
 - Build a user card on the feed
 - Edit profile feature
-- see all my connection who all are connected with me
+- New page- see all my connection who all are connected with me
+- New Page - see all connection requests received who sent me
