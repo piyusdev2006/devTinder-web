@@ -60,3 +60,10 @@
 - Edit profile feature
 - New page- see all my connection who all are connected with me
 - New Page - see all connection requests received who sent me
+- Feature created:- Accept/reject connection request also after accepting/rejecting the user , it is removed
+
+
+## Remaining routes and functionality
+- create Interested/Ignored feature and functionality
+- create page for the SignUp of new user 
+- End to End Testing
