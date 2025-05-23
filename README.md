@@ -56,3 +56,6 @@
 - Logout functionality
 - Get the feed and store the feed in the store
 - Create a feedslice and render the feed in the feed api
+- Build a user card on the feed
+- Edit profile feature
+- see all my connection who all are connected with me
