@@ -7,8 +7,8 @@ import { addRequests, removeRequest } from '../utils/requestSlice';
 
 const Requests = () => {
     const requests = useSelector((store) => store.requests);
-    const dispatch = useDispatch()
-    const [showButtons, setShowButtons] = useState(true)
+    const dispatch = useDispatch();
+    const [showButtons, setShowButtons] = useState(true);
   
     const reviewRequest = async (status, _id) => {
     try {
@@ -50,7 +50,7 @@ const Requests = () => {
 
         {requests.map((request) => {
           const {_id, firstName, lastName, photoUrl, age, gender, about } =
-            request.fromUserId;
+            request;
 
           return (
             <div

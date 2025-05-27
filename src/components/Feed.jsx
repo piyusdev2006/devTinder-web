@@ -1,7 +1,7 @@
 import axios from "axios";
 import { BASE_URL } from "../utils/constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeed } from "../utils/feedSlice";
+import { addFeed , removeUserFromFeed} from "../utils/feedSlice";
 import { useEffect } from "react";
 import UserCard from "./userCard";
 
@@ -29,6 +29,13 @@ const Feed = () => {
   useEffect(() => {
     getFeed();
   }, []);
+  if (!feed) return;
+  
+  if(feed.length <= 0) return (
+    <div className="flex justify-center my-10">
+      <h1 className="text-3xl font-bold">No more users to show</h1>
+    </div>
+  )
   
   return (
     feed && (
