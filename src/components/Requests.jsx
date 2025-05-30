@@ -49,8 +49,9 @@ const Requests = () => {
         <h1 className="text-bold text-3xl text-white">Connection Requests</h1>
 
         {requests.map((request) => {
-          const {_id, firstName, lastName, photoUrl, age, gender, about } =
-            request?.fromUserId || {};
+          const { _id } = request;
+          const {firstName, lastName, photoUrl, age, gender, about } =
+            request;
 
           return (
             <div
@@ -73,12 +74,12 @@ const Requests = () => {
               <div>
                 <button
                   className="btn btn-primary mx-2"
-                  onClick={() => reviewRequest("rejected", request._id)}>
+                  onClick={() => reviewRequest("rejected", _id)}>
                   Reject
                 </button>
                 <button
                   className="btn btn-secondary mx-2"
-                  onClick={() => reviewRequest("accepted", request._id)}>
+                  onClick={() => reviewRequest("accepted", _id)}>
                   Accepted
                 </button>
               </div>
