@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 const userCard = ({ user }) => {
 
   
-  const { _id, firstName, lastName, photoUrl, age, gender, about, skills } = user || {};
+  const { _id, firstName, lastName, photoUrl, age, gender, about, skills } = user;
   
   const dispatch = useDispatch();
 

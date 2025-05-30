@@ -51,7 +51,7 @@ const Requests = () => {
         {requests.map((request) => {
           const { _id } = request;
           const {firstName, lastName, photoUrl, age, gender, about } =
-            request;
+            request.fromuserId || {}; 
 
           return (
             <div
