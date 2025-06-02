@@ -11,6 +11,14 @@ const userCard = ({ user }) => {
   
   const dispatch = useDispatch();
 
+  /**
+   * Sends a request to update the user's status and removes the user from the feed
+   * 
+   * @async
+   * @param {string} status - The status of the request (e.g., "ignored" or "interested")
+   * @param {string} userId - The unique identifier of the user
+   * @throws {Error} Logs any errors that occur during the request
+   */
   const handleSendRequest = async (status, userId) => {
     try {
       await axios.post(BASE_URL + "/request/send/" + status + "/" + userId, {},

@@ -13,28 +13,49 @@ const Connections = () => {
             const res = await axios.get(BASE_URL + "/user/connections",
                 { withCredentials: true }
             );
-            // console.log(res.data.data);
-            dispatch(addConnections(res.data.data));
+            if (res?.data?.data && Array.isArray(res.data.data)) {
+              dispatch(addConnections(res.data.data));
+            } else {
+              console.error("Invalid connections data structure:", res?.data);
+              dispatch(addConnections([])); // Set empty array instead of invalid data
+            }
             
         } catch (error) {
-            console.log(error);
+          console.error(
+            "Error fetching connections:",
+            error.response?.data || error.message
+          );
+          dispatch(addConnections([]));
         }
     }
     useEffect(() => {
         fetchConnections();
     }, [])
 
-    if (!connections) return;
+  
+    if (connections === null) {
+      return (
+        <div className="flex justify-center text-white font-semibold my-10">
+          <h1>Loading connections...</h1>
+        </div>
+      );
+    }
 
-    if(connections.length === 0) return <h1 className='flex justify-center text-white font-semibold my-10'>No Connections Found!</h1>;
+    if (!Array.isArray(connections) || connections.length === 0) {
+      return (
+        <h1 className="flex justify-center text-white font-semibold my-10">
+          No Connections Found!
+        </h1>
+      );
+    }
 
   return (
     <div className="text-center my-10">
         <h1 className='text-bold text-3xl text-white'>Connections</h1> 
          
-      {connections.map((connection) => {
-        const { _id } = connection;
-              const {firstName, lastName, photoUrl, age, gender, about } = connection.user;
+          {connections.map((connection) => {
+              const { _id } = connection;
+              const { firstName, lastName, photoUrl, age, gender, about } = connection.user;
 
               return (
                   <div key={_id} className='flex m-4 p-4 rounded-lg bg-base-300 w-1/2 mx-auto'>
