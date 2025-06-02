@@ -11,9 +11,9 @@ import Requests from "./components/Requests";
 
 function App() {
   return (
-    <>
+
       <Provider store={reduxStore}>
-        <BrowserRouter basename="/">
+        <BrowserRouter>
           <Routes>
             <Route path="/" element={<Body />}>
               <Route path="/" element={<Feed />} />
@@ -25,7 +25,6 @@ function App() {
           </Routes>
         </BrowserRouter>
       </Provider>
-    </>
   );
 }
 

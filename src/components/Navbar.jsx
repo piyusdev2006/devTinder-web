@@ -21,7 +21,7 @@ const Navbar = () => {
       return navigate("/login");
 
     } catch (error) {
-      // Error 
+      console.error("Logout error:", error);
     }
   }
 
@@ -34,14 +34,22 @@ const Navbar = () => {
       </div>
       {user && (
         <div className="flex flex-none gap-2">
-          <div className="form-control">Welcome , {user.firstName}</div>
+          <div className="form-control">
+            Welcome , {user.firstName || "user"}
+          </div>
           <div className="dropdown dropdown-end mx-5">
             <div
               tabIndex={0}
               role="button"
               className="btn btn-ghost btn-circle avatar">
               <div className="w-8 rounded-full">
-                <img alt="User Photo" src={user.photoUrl} />
+                <img
+                  alt="User Photo"
+                  src={user.photoUrl || "/default-avatar.png"}
+                  onError={(e) => {
+                    e.target.src = "/default-avatar.png";
+                  }}
+                />
               </div>
             </div>
             <ul
@@ -54,10 +62,10 @@ const Navbar = () => {
                 </Link>
               </li>
               <li>
-                <Link to = "/connections">Connections</Link>
+                <Link to="/connections">Connections</Link>
               </li>
               <li>
-                <Link to = "/requests">Connection Received</Link>
+                <Link to="/requests">Connection Requests</Link>
               </li>
               <li>
                 <a onClick={handleLogout}>Logout</a>

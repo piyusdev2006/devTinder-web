@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 const Body = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
   const userData = useSelector((store) => store.user);
   
 
@@ -22,28 +23,34 @@ const Body = () => {
         dispatch(addUser(res.data));
 
       } catch (error) {
-        if(error.response.status === 401){
-          navigate("/login");
+        if (error.response?.status === 401) {
+          // Only redirect to login if not already on login page
+          if (location.pathname !== "/login") {
+            navigate("/login");
+          }
         }
-        console.log(error);
+        console.error("Error fetching user:", error);
       };
   };
 
   // After the component is loaded , this useEffect will be called and fetch the user data
+  // After the component is loaded, this useEffect will be called and fetch the user data
   useEffect(() => {
-    if (!userData) {
+    // Don't fetch user data if already on login page or if user data already exists
+    if (!userData && location.pathname !== "/login") {
       fetchUser();
     }
-  }, []);
-
+  }, [location.pathname]);
 
   return (
-      <div>
-          <Navbar />
-          <Outlet />
-          <Footer />
+    <div className="min-h-screen flex flex-col">
+      <Navbar />
+      <main className="flex-1">
+        <Outlet />
+      </main>
+      <Footer />
     </div>
-  )
+  );
 }
 
 export default Body;

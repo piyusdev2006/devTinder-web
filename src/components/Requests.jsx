@@ -8,11 +8,22 @@ import { addRequests, removeRequest } from '../utils/requestSlice';
 const Requests = () => {
     const requests = useSelector((store) => store.requests);
     const dispatch = useDispatch();
-    const [showButtons, setShowButtons] = useState(true);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState("");
   
     const reviewRequest = async (status, _id) => {
+
+      if (!_id || !status) {
+        setError("Invalid request data");
+        return;
+      }
+
+      setIsLoading(true);
+      setError("");
+
     try {
-      const res = await axios.post(BASE_URL + "/request/review/" + status + "/" + _id,
+      const res = await axios.post(
+        BASE_URL + "/request/review/" + status + "/" + _id,
         {},
         { withCredentials: true }
       );
@@ -24,9 +35,9 @@ const Requests = () => {
         "Error reviewing request:",
         error.response?.data || error.message
       );
-      // Issue Fixed: Show user-friendly error message
-      alert("Failed to process request. Please try again.");
-      
+      setError("Failed to process request. Please try again.");
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -48,8 +59,10 @@ const Requests = () => {
             "Error fetching requests:",
             error.response?.data || error.message
           );
-          dispatch(addRequests([]));
-        
+          setError("Failed to load requests. Please refresh the page.");
+            dispatch(addRequests([]));
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -57,13 +70,28 @@ const Requests = () => {
         fetchRequests();
     },[])
 
-    if (requests === null) {
+    if (isLoading && requests === null) {
       return (
         <div className="flex justify-center text-white font-semibold my-10">
           <h1>Loading requests...</h1>
         </div>
       );
-    }
+   }
+  
+   if (error) {
+     return (
+       <div className="flex flex-col justify-center items-center text-white font-semibold my-10">
+         <h1 className="text-red-500 mb-4">{error}</h1>
+         <button
+           className="btn btn-primary"
+           onClick={fetchRequests}
+           disabled={isLoading}>
+           {isLoading ? "Loading..." : "Retry"}
+         </button>
+       </div>
+     );
+   }
+
     
     if (!Array.isArray(requests) || requests.length === 0) {
       return (
@@ -78,11 +106,20 @@ const Requests = () => {
         <h1 className="text-bold text-3xl text-white">Connection Requests</h1>
 
         {requests.map((request) => {
-          // Fixed: Proper destructuring based on request data structure
-          // _id comes from the request object itself
-          // User details come from request.fromUserId (the user who sent the request)
+          if (!request || !request._id) {
+            return null;
+          }
+
           const { _id } = request;
-          const { firstName, lastName, photoUrl, age, gender, about } = request.fromUserId;
+          const userInfo = request.fromUserId || request.user || {};
+          const {
+            firstName = "Unknown",
+            lastName = "",
+            photoUrl = "/default-avatar.png",
+            age,
+            gender,
+            about = "No description available",
+          } = userInfo;
 
           return (
             <div
@@ -93,6 +130,9 @@ const Requests = () => {
                   className="w-20 h-20 rounded-full"
                   src={photoUrl}
                   alt="photo"
+                  onError={(e) => {
+                    e.target.src = "/default-avatar.png";
+                  }}
                 />
               </div>
               <div className="text-left mx-4">
@@ -105,13 +145,15 @@ const Requests = () => {
               <div>
                 <button
                   className="btn btn-primary mx-2"
-                  onClick={() => reviewRequest("rejected", _id)}>
-                  Reject
+                  onClick={() => reviewRequest("rejected", _id)}
+                  disabled={isLoading}>
+                  {isLoading ? "..." : "Reject"}
                 </button>
                 <button
                   className="btn btn-secondary mx-2"
-                  onClick={() => reviewRequest("accepted", _id)}>
-                  Accept
+                  onClick={() => reviewRequest("accepted", _id)}
+                  disabled={isLoading}>
+                  {isLoading ? "..." : "Accept"}
                 </button>
               </div>
             </div>
