@@ -29,6 +29,7 @@ const Feed = () => {
     }
   };
 
+
   useEffect(() => {
     getFeed();
   }, []);
@@ -38,17 +39,19 @@ const Feed = () => {
 
   if (!feed) return;
   
-  if (feed.length <= 0)
-    return <h1 className="flex justify-center my-10 text-xl text-white">
-    Loading feed...
-  </h1>;
+  if (feed.length <= 0) {
+    return (
+      <h1 className="flex justify-center my-10 text-xl text-white">
+        Loading feed...
+      </h1>
+    )
+  }
+  
   
   return (
-    feed && (
       <div className="flex justify-center my-10">
         <UserCard user={feed[0]} />
       </div>
-    )
   );
 };
 

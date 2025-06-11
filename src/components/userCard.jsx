@@ -48,7 +48,7 @@ const UserCard = ({ user }) => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{firstName + " " + lastName}</h2>
-        {skills && (
+        {skills && skills.length > 0  && (
           <p>
             <strong>Skills:</strong>{" "}
             {Array.isArray(skills) ? skills.join(", ") : skills}
