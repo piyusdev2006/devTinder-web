@@ -19,7 +19,7 @@ const Feed = () => {
       const res = await axios.get(BASE_URL + "/user/feed", {
         withCredentials: true,
       });
-      dispatch(addFeed(res?.data?.data));
+      dispatch(addFeed(res?.data?.userFeed));
 
     } catch (error) {
       console.error(
@@ -33,11 +33,13 @@ const Feed = () => {
     getFeed();
   }, []);
 
+  // Add this temporarily for debugging
+  console.log("Feed from Redux store:", feed);
+
   if (!feed) return;
   
   if (feed.length <= 0)
-    return
-  <h1 className="flex justify-center my-10 text-xl text-white">
+    return <h1 className="flex justify-center my-10 text-xl text-white">
     Loading feed...
   </h1>;
   
