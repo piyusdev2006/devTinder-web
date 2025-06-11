@@ -3,68 +3,33 @@ import { BASE_URL } from '../utils/constants';
 import { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { addConnections } from '../utils/connectionSlice';
+import { useState } from 'react';
 
 const Connections = () => {
 
   const connections = useSelector((store) => store.connections);
   const dispatch = useDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const fetchConnections = async () => {
-    setIsLoading(true);
-    setError("");
-
-        try {
-          const res = await axios.get(BASE_URL + "/user/connections", {
-            withCredentials: true,
-          });
-          if (res?.data?.data && Array.isArray(res.data.data)) {
-            dispatch(addConnections(res.data.data));
-          } else {
-            console.error("Invalid connections data structure:", res?.data);
-            dispatch(addConnections([]));
-          }
-        } catch (error) {
-          console.error(
-            "Error fetching connections:",
-            error.response?.data || error.message
-          );
-          setError("Failed to load connections. Please refresh the page.");
-          dispatch(addConnections([]));
-        } finally {
-          setIsLoading(false);
-        }
+    try {
+      const res = await axios.get(BASE_URL + "/user/connections", {
+        withCredentials: true,
+      });
+      dispatch(addConnections(res.data.data));
+    } catch (error) {
+      console.error(
+        "Error fetching connections:",
+        error.response?.data || error.message
+      );
     }
+  }
     useEffect(() => {
         fetchConnections();
     }, [])
-
   
-    if (isLoading && connections === null) {
-      return (
-        <div className="flex justify-center text-white font-semibold my-10">
-          <h1>Loading connections...</h1>
-        </div>
-      );
-  }
+    if (!connections) return;
   
-  if (error) {
-    return (
-      <div className="flex flex-col justify-center items-center text-white font-semibold my-10">
-        <h1 className="text-red-500 mb-4">{error}</h1>
-        <button
-          className="btn btn-primary"
-          onClick={fetchConnections}
-          disabled={isLoading}
-        >
-          {isLoading ? "Loading..." : "Retry"}
-        </button>
-      </div>
-    );
-  }
-
-    if (!Array.isArray(connections) || connections.length === 0) {
+    if (connections.length === 0) {
       return (
         <h1 className="flex justify-center text-white font-semibold my-10">
           No Connections Found!
@@ -76,27 +41,7 @@ const Connections = () => {
     <div className="text-center my-10">
       <h1 className="text-bold text-3xl text-white">Connections</h1>
 
-      {connections.map((connection) => {
-        if (!connection || !connection._id) {
-          return null;
-        }
-
-        const { _id } = connection;
-        // Handle multiple possible data structures
-        const userInfo =
-          connection.user ||
-          connection.toUserId ||
-          connection.fromUserId ||
-          connection;
-
-        const {
-          firstName = "Unknown",
-          lastName = "",
-          photoUrl = "/default-avatar.png",
-          age,
-          gender,
-          about = "No description available",
-        } = userInfo || {};
+      {connections.map((connection) => {const { _id, firstName,   lastName, photoUrl, age, gender, about } = connection;
 
         return (
           <div

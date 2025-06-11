@@ -10,21 +10,12 @@ const Login = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [isLoginForm, setIsLoginForm] = useState(false);
+  const [isLoginForm, setIsLoginForm] = useState(true);
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-
-    if (!email || !password) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    setIsLoading(true);
-    setError("");
 
     try {
       const res = await axios.post(
@@ -36,44 +27,29 @@ const Login = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data));
-      navigate("/");
+      return navigate("/");
     } catch (error) {
       setError(error?.response?.data || "Login failed. Please try again.");
-      console.error("Login error:", error);
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleSignUp = async () => {
-
-    if (!firstName || !lastName || !email || !password) {
-      setError("Please fill in all fields");
-      return;
-    }
-
-    setIsLoading(true);
-    setError("");
     try {
       const res = await axios.post(BASE_URL + "/signup", { firstName, lastName, email, password },
-        {withCredentials: true}
+        { withCredentials: true }
       );
       dispatch(addUser(res.data.data));
-      navigate("/profile");
+      return navigate("/profile");
 
     } catch (error) {
-      setError(error?.response?.data || "Signup failed. Please try again."); 
-      console.error("Signup error:", error);
-    } finally {
-      setIsLoading(false);
+      setError(error?.response?.data || "Signup failed. Please try again.");
     }
-  }
+  };
 
   return (
-    <div className="flex justify-center my-20">
+    <div className="flex justify-center my-10">
       <div className="card shadow-xl bg-base-300 w-96">
         <div className="card-body">
-          {/* Logo & Title */}
           <div className="text-center mb-4">
             <div className="text-3xl font-bold text-primary">
               {isLoginForm ? "🌐Login" : "🌐SignUp"}
@@ -83,11 +59,10 @@ const Login = () => {
             </p>
           </div>
 
-          {/* firstName Input */}
           {!isLoginForm && (
             <>
-              <label className="form-control w-full max-w-xs ">
-                <div className="label mb-2">
+              <label className="form-control w-full max-w-xs my-2">
+                <div className="label">
                   <span className="label-text">FirstName </span>
                 </div>
                 <input
@@ -100,8 +75,8 @@ const Login = () => {
               </label>
 
               {/* lastName input */}
-              <label className="form-control w-full max-w-xs ">
-                <div className="label mb-2">
+              <label className="form-control w-full max-w-xs my-2">
+                <div className="label">
                   <span className="label-text">LastName</span>
                 </div>
                 <input
@@ -115,8 +90,8 @@ const Login = () => {
             </>
           )}
 
-          <label className="form-control w-full max-w-xs ">
-            <div className="label mb-2">
+          <label className="form-control w-full max-w-xs my-2">
+            <div className="label">
               <span className="label-text">Email address </span>
             </div>
             <input
@@ -128,9 +103,8 @@ const Login = () => {
             />
           </label>
 
-          {/* Password Input */}
           <label className="form-control w-full max-w-xs my-2">
-            <div className="label mb-2">
+            <div className="label">
               <span className="label-text">Password</span>
             </div>
             <input
@@ -145,10 +119,10 @@ const Login = () => {
           {/* Login Button */}
           <div className="card-actions justify-center mt-4 ">
             <button
-              className={`btn btn-primary ${isLoading ? "loading" : ""}`}
+              className="btn btn-primary"
               onClick={isLoginForm ? handleLogin : handleSignUp}
-              disabled={isLoading}>
-              {isLoading ? "Processing..." : isLoginForm ? "Login" : "SignUp"}
+            >
+              {isLoginForm ? "Login" : "SignUp"}
             </button>
           </div>
 
@@ -161,8 +135,8 @@ const Login = () => {
           </p>
 
           {/* Error Display */}
-          {error && <p className="text-red-500 text-center">{error}</p>}
-          
+          <p className="text-red-500 text-center">{error}</p>
+
           <div className="text-center">
             <a href="#" className="text-sm text-primary hover:underline">
               Forgot password?

@@ -1,30 +1,23 @@
-import React from 'react';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
-import { removeUserFromFeed } from '../utils/feedSlice';
 import { useDispatch } from 'react-redux';
+import { removeUserFromFeed } from '../utils/feedSlice';
 
-const userCard = ({ user }) => {
-  const dispatch = useDispatch();
+const UserCard = ({ user }) => {
   // Safely destructure user data with fallbacks
   const {
     _id,
-    firstName = "Unknown",
-    lastName = "",
-    photoUrl = "/default-avatar.png",
+    firstName,
+    lastName,
+    photoUrl,
     age,
     gender,
-    about = "No description available",
+    about,
     skills,
-  } = user || {};
+  } = user;
+  const dispatch = useDispatch();
 
   const handleSendRequest = async (status, userId) => {
-    if (!userId || !status) {
-      console.error("Invalid parameters for request");
-      return;
-    }
-
-    
     try {
       await axios.post(
         BASE_URL + "/request/send/" + status + "/" + userId,
@@ -38,20 +31,9 @@ const userCard = ({ user }) => {
         "Error sending request:",
         error.response?.data || error.message
       );
-      alert("Failed to send request. Please try again.");
     }
   };
 
-  // Don't render if no user data
-  if (!user || !_id) {
-    return (
-      <div className="card bg-base-300 w-96 shadow-xl">
-        <div className="card-body">
-          <h2 className="card-title">No user data available</h2>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="card bg-base-300 w-96 shadow-xl">
@@ -99,5 +81,5 @@ const userCard = ({ user }) => {
   );
 }
 
-export default userCard;
+export default UserCard;
 

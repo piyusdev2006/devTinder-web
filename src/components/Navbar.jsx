@@ -1,9 +1,8 @@
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BASE_URL } from "../utils/constants";
 import { removeUser } from "../utils/userSlice";
-import { useNavigate } from "react-router-dom";
 
 
 const Navbar = () => {
@@ -16,7 +15,7 @@ const Navbar = () => {
       await axios.post(BASE_URL + "/logout", {}, 
       {
         withCredentials: true,
-        });
+      });
       dispatch(removeUser());
       return navigate("/login");
 
@@ -35,14 +34,14 @@ const Navbar = () => {
       {user && (
         <div className="flex flex-none gap-2">
           <div className="form-control">
-            Welcome , {user.firstName || "user"}
+            Welcome , { user.firstName }
           </div>
           <div className="dropdown dropdown-end mx-5">
             <div
               tabIndex={0}
               role="button"
               className="btn btn-ghost btn-circle avatar">
-              <div className="w-8 rounded-full">
+              <div className="w-10 rounded-full">
                 <img
                   alt="User Photo"
                   src={user.photoUrl || "/default-avatar.png"}
