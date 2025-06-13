@@ -50,88 +50,87 @@ const Login = () => {
     <div className="flex justify-center my-10">
       <div className="card shadow-xl bg-base-300 w-96">
         <div className="card-body">
-          <div className="text-center mb-4">
-            <div className="text-3xl font-bold text-primary">
-              {isLoginForm ? "🌐Login" : "🌐SignUp"}
-            </div>
-            <p className="text-sm mt-2 text-gray-400">
-              Your dev community is just a login away
-            </p>
+          <h2 className="card-title justify-center">
+            {isLoginForm ? "🌐Login" : "🌐SignUp"}
+          </h2>
+          <p className="text-sm mt-2 text-gray-400 text-center">
+            Your dev community is just a login away
+          </p>
+
+          <div>
+            {!isLoginForm && (
+              <>
+                <label className="form-control w-full max-w-xs my-2">
+                  <div className="label">
+                    <span className="label-text">FirstName </span>
+                  </div>
+                  <input
+                    type="text"
+                    value={firstName}
+                    placeholder="Enter Your FirstName"
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setFirstName(e.target.value)}
+                  />
+                </label>
+
+                {/* lastName input */}
+                <label className="form-control w-full max-w-xs my-2">
+                  <div className="label">
+                    <span className="label-text">LastName</span>
+                  </div>
+                  <input
+                    type="text"
+                    value={lastName}
+                    placeholder="Enter Your lastName"
+                    className="input input-bordered w-full max-w-xs"
+                    onChange={(e) => setLastName(e.target.value)}
+                  />
+                </label>
+              </>
+            )}
+
+            <label className="form-control w-full max-w-xs my-2">
+              <div className="label">
+                <span className="label-text">Email address </span>
+              </div>
+              <input
+                type="email"
+                value={email}
+                placeholder="Enter Your email"
+                className="input input-bordered w-full max-w-xs"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+            </label>
+
+            <label className="form-control w-full max-w-xs my-2">
+              <div className="label">
+                <span className="label-text">Password</span>
+              </div>
+              <input
+                type="password"
+                value={password}
+                placeholder="Enter password"
+                className="input input-bordered w-full max-w-xs"
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </label>
           </div>
-
-          {!isLoginForm && (
-            <>
-              <label className="form-control w-full max-w-xs my-2">
-                <div className="label">
-                  <span className="label-text">FirstName </span>
-                </div>
-                <input
-                  type="text"
-                  value={firstName}
-                  placeholder="Enter Your FirstName"
-                  className="input input-bordered w-full max-w-xs"
-                  onChange={(e) => setFirstName(e.target.value)}
-                />
-              </label>
-
-              {/* lastName input */}
-              <label className="form-control w-full max-w-xs my-2">
-                <div className="label">
-                  <span className="label-text">LastName</span>
-                </div>
-                <input
-                  type="text"
-                  value={lastName}
-                  placeholder="Enter Your lastName"
-                  className="input input-bordered w-full max-w-xs"
-                  onChange={(e) => setLastName(e.target.value)}
-                />
-              </label>
-            </>
-          )}
-
-          <label className="form-control w-full max-w-xs my-2">
-            <div className="label">
-              <span className="label-text">Email address </span>
-            </div>
-            <input
-              type="email"
-              value={email}
-              placeholder="Enter Your email"
-              className="input input-bordered w-full max-w-xs"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-
-          <label className="form-control w-full max-w-xs my-2">
-            <div className="label">
-              <span className="label-text">Password</span>
-            </div>
-            <input
-              type="passsword"
-              value={password}
-              placeholder="Enter password"
-              className="input input-bordered w-full max-w-xs"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </label>
 
           {/* Login Button */}
           <div className="card-actions justify-center mt-4 ">
             <button
               className="btn btn-primary"
-              onClick={isLoginForm ? handleLogin : handleSignUp}
-            >
+              onClick={isLoginForm ? handleLogin : handleSignUp}>
               {isLoginForm ? "Login" : "SignUp"}
             </button>
           </div>
 
-          <p
-            className="mx-auto cursor-pointer underline py-2"
-            onClick={() => setIsLoginForm((value) => !value)}>
-            {isLoginForm
-              ? "New User! signup here "
-              : "Existing user login here"}
+          <p className="mx-auto cursor-pointer underline py-2"
+            onClick={() => setIsLoginForm((value) => !value)}
+          >
+              {isLoginForm
+                ? "New User! signup here "
+                : "Existing user login here"}
           </p>
 
           {/* Error Display */}

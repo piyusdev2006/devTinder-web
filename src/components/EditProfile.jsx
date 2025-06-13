@@ -14,9 +14,9 @@ const EditProfile = ({ user }) => {
   const [gender, setGender] = useState(user.gender || "");
   const [about, setAbout] = useState(user.about || "");
   const [error, setError] = useState("");
-  const [showToast, setShowToast] = useState(false);
   const dispatch = useDispatch();
-
+  const [showToast, setShowToast] = useState(false);
+  
   const saveProfile = async () => {
     setError("");
 
@@ -40,14 +40,14 @@ const EditProfile = ({ user }) => {
         setShowToast(false);
       }, 3000);
     } catch (error) {
-      setError(error?.response?.data || "Failed to update profile");
+      setError(error.response.data || "Failed to update profile");
     }
   };
 
 
   return (
     <>
-      <div className="flex flex-col justify-center my-10 gap-10">
+      <div className="flex justify-center my-20 gap-4">
         <div className="flex justify-center mx-10">
         <div className="card bg-base-300 w-96 shadow-xl">
           <div className="card-body">
@@ -81,7 +81,7 @@ const EditProfile = ({ user }) => {
                   <div className="label">
                     <span className="label-text">Photo URL :</span>
                   </div>
-                  <input
+                  <input 
                     type="text"
                     value={photoUrl}
                     className="input input-bordered w-full max-w-xs"
@@ -138,7 +138,7 @@ const EditProfile = ({ user }) => {
       </div>
       <UserCard
           user={{ firstName, lastName, photoUrl, age, gender, about }}
-        />
+      />
       </div>
       {showToast && (
         <div className="toast toast-top toast-center">

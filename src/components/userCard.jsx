@@ -39,7 +39,8 @@ const UserCard = ({ user }) => {
     <div className="card bg-base-300 w-96 shadow-xl">
       <figure>
         <img
-          src={photoUrl}
+          className="w-50 h-60 rounded-full mt-4"
+          src={user.photoUrl}
           alt="Profile photo"
           onError={(e) => {
             e.target.src = "/default-avatar.png";
@@ -48,7 +49,7 @@ const UserCard = ({ user }) => {
       </figure>
       <div className="card-body">
         <h2 className="card-title">{firstName + " " + lastName}</h2>
-        {skills && skills.length > 0  && (
+        {skills && skills.length > 0 && (
           <p>
             <strong>Skills:</strong>{" "}
             {Array.isArray(skills) ? skills.join(", ") : skills}
@@ -56,12 +57,14 @@ const UserCard = ({ user }) => {
         )}
         {age && gender && (
           <p>
-            <strong>Age:</strong> {age} <strong>Gender:</strong> {gender}
+            <strong>Age : </strong>
+            {age} <strong>|</strong> <strong>Gender : </strong>
+            {gender}
           </p>
         )}
         {about && (
           <p className="overflow-auto">
-            <strong>About:</strong> {about}
+            <strong>About :</strong> {about}
           </p>
         )}
         <div className="card-actions justify-center my-4">
