@@ -46,10 +46,10 @@ const Connections = () => {
         return (
           <div
             key={_id}
-            className="flex m-4 p-4 rounded-lg bg-base-300 w-1/3 mx-auto">
+            className="flex m-4 p-4 rounded-lg bg-base-300 w-1/2 mx-auto">
             <div>
               <img
-                className="w-20 h-24 rounded-full object-cover"
+                className="w-20 h-20 rounded-full object-cover"
                 src={photoUrl}
                 alt="photo"
                 onError={(e) => {

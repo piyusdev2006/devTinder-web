@@ -19,7 +19,7 @@ const Login = () => {
 
     try {
       const res = await axios.post(
-        BASE_URL + "/login",
+        `${BASE_URL}/login`,
         {
           email,
           password,
@@ -27,7 +27,7 @@ const Login = () => {
         { withCredentials: true }
       );
       dispatch(addUser(res.data));
-      return navigate("/");
+      navigate("/");
     } catch (error) {
       setError(error?.response?.data || "Login failed. Please try again.");
     }
@@ -35,15 +35,27 @@ const Login = () => {
 
   const handleSignUp = async () => {
     try {
-      const res = await axios.post(BASE_URL + "/signup", { firstName, lastName, email, password },
+      const res = await axios.post(
+        `${BASE_URL}/signup`,
+        {
+          firstName,
+          lastName,
+          email,
+          password,
+        },
         { withCredentials: true }
       );
       dispatch(addUser(res.data.data));
-      return navigate("/profile");
+      navigate("/profile");
 
     } catch (error) {
       setError(error?.response?.data || "Signup failed. Please try again.");
     }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    isLoginForm ? handleLogin() : handleSignUp();
   };
 
   return (
@@ -57,7 +69,7 @@ const Login = () => {
             Your dev community is just a login away
           </p>
 
-          <div>
+          <form onSubmit={handleSubmit}>
             {!isLoginForm && (
               <>
                 <label className="form-control w-full max-w-xs my-2">
@@ -114,23 +126,23 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </label>
-          </div>
 
-          {/* Login Button */}
-          <div className="card-actions justify-center mt-4 ">
-            <button
-              className="btn btn-primary"
-              onClick={isLoginForm ? handleLogin : handleSignUp}>
-              {isLoginForm ? "Login" : "SignUp"}
-            </button>
-          </div>
+            {/* Login Button */}
+            <div className="card-actions justify-center mt-4 ">
+              <button
+                className="btn btn-primary"
+                onClick={isLoginForm ? handleLogin : handleSignUp}>
+                {isLoginForm ? "Login" : "SignUp"}
+              </button>
+            </div>
+          </form>
 
-          <p className="mx-auto cursor-pointer underline py-2"
-            onClick={() => setIsLoginForm((value) => !value)}
-          >
-              {isLoginForm
-                ? "New User! signup here "
-                : "Existing user login here"}
+          <p
+            className="mx-auto cursor-pointer underline py-2"
+            onClick={() => setIsLoginForm((value) => !value)}>
+            {isLoginForm
+              ? "New User! signup here "
+              : "Existing user login here"}
           </p>
 
           {/* Error Display */}
