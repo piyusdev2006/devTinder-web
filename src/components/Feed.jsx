@@ -13,7 +13,7 @@ const Feed = () => {
   const dispatch = useDispatch();
 
   const getFeed = async () => {
-    if (feed) return;
+    if (feed) return <div>Loading...</div>;;
 
     try {
       const res = await axios.get(BASE_URL + "/user/feed", {
