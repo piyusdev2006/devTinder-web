@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { createSocketConnection } from '../utils/socket';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { BASE_URL } from '../utils/constants';
 
-const chatWindow = () => {
+const ChatWindow = () => {
   const { targetUserId } = useParams();
   const [messages, setMessages] = useState([]); 
   const [newMessage, setNewMessage] = useState("")
@@ -13,21 +13,20 @@ const chatWindow = () => {
   const userId = user?._id;
 
 
-  const fetchChatMessages = async (req, res) => {
+  const fetchChatMessages = async () => {
     const chat = await axios.get(BASE_URL + `/chat/${targetUserId}`, {
       withCredentials: true,
     });
 
     console.log(chat.data.messages);
 
-    const chatMessages = chat.data.messages.map((message) => {
-      const { sender, text, createdAt } = message;
+    const chatMessages = chat?.data?.messages.map((message) => {
+      const { sender, text} = message;
       
       return {
         firstName: sender?.firstName,
         lastName: sender?.lastName,
         text: text,
-        timestamp: createdAt || new Date().toISOString(),
       };
     });
     setMessages(chatMessages);
@@ -36,7 +35,6 @@ const chatWindow = () => {
   
 
   useEffect(() => {
-    if (!targetUserId) return;
     fetchChatMessages();
   }, []);
   
@@ -48,18 +46,19 @@ const chatWindow = () => {
     // As soon as the page loads , the socket connection is made and  join-room event is emiited
     socket.emit("join-room", {
       firstName: user.firstName,
-      lastName: user.lastName,
       userId,
       targetUserId,
     });
     
-    socket.on("messageReceived", ({firstName, lastName, text}) => {
+    socket.on("messageReceived", ({ firstName, lastName, text }) => {
       console.log(firstName + " : " + text);
-      setMessages((messages) => [...messages , {firstName, lastName, text} ]);
-    }) 
+      setMessages((messages) => [
+        ...messages,
+        { firstName, lastName, text }]);
+    });
     return () => {
       socket.disconnect();
-    }
+    };
 
   }, [userId, targetUserId]);
 
@@ -75,13 +74,13 @@ const chatWindow = () => {
     setNewMessage((messages) => [
       ...messages,
       {
-        firstName,
-        lastName,
-        text,
-        timestamp: new Date().toISOString(),
+        firstName: user.firstName,
+        lastName: user.lastName,
+        text: newMessage,
       },
-    ]);
-  }
+    ]); 
+    setNewMessage("");
+  };
 
 
   return (
@@ -99,8 +98,7 @@ const chatWindow = () => {
             >
               <div className="chat-header">
                 {`${message.firstName} ${message.lastName}`}
-                <time className="text-xs opacity-50">
-                  {new Date(message.timestamp).toLocaleTimeString()}
+                <time className="text-xs opacity-50"> 1 hour ago
                 </time>
               </div>
               <div className="chat-bubble">{message.text}</div>
@@ -120,6 +118,6 @@ const chatWindow = () => {
   )
 }
 
-export default chatWindow;
+export default ChatWindow;
 
 
